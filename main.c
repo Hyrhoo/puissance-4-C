@@ -10,6 +10,7 @@ int main() {
     displayGame(g);
     placeInCol(g, 0, 'x');
     displayGame(g);
+    printf("%d\n", isPosAWin(g, 0, 2));
     placeInCol(g, 0, 'x');
     displayGame(g);
     placeInCol(g, 0, 'x');
