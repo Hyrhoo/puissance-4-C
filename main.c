@@ -1,4 +1,13 @@
 #include "structs/structs.h"
+#include "minimax/minimax.h"
+
+int varInTab(int var, int tab[], int nb) {
+    for (int i = 0; i < nb; i++) {
+        if (var == tab[i]) 
+            return 1;
+    }
+    return 0;
+}
 
 int askCol() {
     int e, input, tmp;
@@ -12,18 +21,28 @@ int askCol() {
     return input;
 }
 
+void askIA() {
+    int e, tmp, input, values[] = {1, 2, 3, 4};
+    do {
+        printf("Comment voulez-vous jouer ?\n - 1) Joueur contre Joueur\n - 2) Joueur en premier, IA en second\n - 3) IA en premier, Joueur en second\n - 4) IA contre IA\n");
+        e = scanf("%d", &input);
+        do {
+            tmp = getchar();
+        } while (tmp != EOF && tmp != '\n');
+    } while (e != 1 || varInTab(input, values, 4));
+}
+
 void gammeLoop() {
     Game g = makeGame();
-    char players[] = {'x', 'o'};
-    char winner = ' ';
-    char player;
+    Player players[] = {makePlayer('x', "\033[0;31m"), makePlayer('o', "\033[0;34m")};
+    char ia[2];
+    Player winner = NULL;
+    Player player;
     int col, row, win;
     for (int turn = 0; turn < 42; turn++) {
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         displayGame(g);
-        printf("\n\n\n\n\n");
         player = players[turn % 2];
-        printf("Au tour du joueur %c.\n", player);
+        printf("Au tour du joueur %s%c\033[0m.\n", player->color, player->pion);
         do {
             col = askCol() - 1;
             row = placeInCol(g, col, player);
@@ -33,11 +52,11 @@ void gammeLoop() {
             break;
         }
     }
-    displayGame(g);
-    if (winner == ' ')
+    showWin(g);
+    if (winner == NULL)
         printf("Égalité.\n");
     else
-        printf("Victoire du joueur %c!\n", winner);
+        printf("Victoire du joueur %s%c\033[0m!\n", winner->color, winner->pion);
 }
 
 int main() {
