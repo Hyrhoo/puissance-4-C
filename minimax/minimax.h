@@ -1,4 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "../structs/structs.h"
 
+int minimax(Game g, int maxDepth, Player p, Player other);
+int minimaxMax(Game g, int maxDepth, Player p, Player other, int alpha, int beta);
+int minimaxMin(Game g, int maxDepth, Player p, Player other, int alpha, int beta);

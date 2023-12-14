@@ -5,7 +5,7 @@
 typedef struct {
     char pion;
     char color[10];
-}PionColor, *Player;
+} PionColor, *Player;
 
 typedef struct {
     Player* g;
@@ -15,7 +15,9 @@ typedef struct {
 Player makePlayer(char pion, char color[]);
 
 Game makeGame();
+Game copyGame(Game g);
 void displayGame(Game g);
 int placeInCol(Game g, int col, Player p);
+void undo(Game g, int x, int y);
 int isPosAWin(Game g, int x, int y);
 void showWin(Game g);

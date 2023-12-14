@@ -26,6 +26,20 @@ Game makeGame() {
     return g;
 }
 
+Game copyGame(Game g) {
+    Game new;
+    new.np = g.np;
+    new.g = (Player*)malloc(42 * sizeof(Player));
+    if (new.g == NULL) {
+        fprintf(stderr, "Erreur malloc dans 'copyGame'\n");
+        exit(2);
+    }
+    for (int i=0; i < 42; i++) {
+        new.g[i] = g.g[i];
+    }
+    return new;
+}
+
 void displayGame(Game g) {
     int i;
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -43,10 +57,10 @@ void displayGame(Game g) {
 
 int placeInCol(Game g, int col, Player p) {
     int i;
-    if (col > 6 || col < 0) {
-        fprintf(stderr, "Erreur, mauvaise collonne dans 'placeInCol': %d\n", col);
-        exit(1);
-    }
+    // if (col > 6 || col < 0) {
+    //     fprintf(stderr, "Erreur, mauvaise collonne dans 'placeInCol': %d\n", col);
+    //     exit(1);
+    // }
     for (int y=5; y >= 0; y--) {
         i = y*7 + col;
         if (g.g[i] == g.np) {
@@ -57,12 +71,15 @@ int placeInCol(Game g, int col, Player p) {
     return -1;
 }
 
+void undo(Game g, int x, int y) {
+    g.g[x + y * 7] = g.np;
+}
+
 int isPosAWin(Game g, int x, int y) {
     int i = x + y * 7;
     Player pion = g.g[i];
     if (pion == g.np)
         return 0;
-    //printf("debug(%d, %d)\n", x, y);
     int test[] = {-1, -6, -8, -7};
     int xtest[] = {-1, 1, -1, 0};
     int cons, dep, xdep, last, next;
@@ -92,7 +109,7 @@ int isPosAWin(Game g, int x, int y) {
 }
 
 void showWin(Game g) {
-    // \033[0;32m
+    // \033[7m\033[5;32m
     int i;
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     printf("\t\t╔═════╤═════╤═════╤═════╤═════╤═════╤═════╗\n");
@@ -101,7 +118,7 @@ void showWin(Game g) {
         for (int x=0; x < 7; x++) {
             i = y * 7 + x;
             if (isPosAWin(g, x, y))
-                printf("  \033[0;32m%c\033[0m  ", g.g[i]->pion);
+                printf("  %s\033[1m\033[5m%c\033[0m  ", g.g[i]->color, g.g[i]->pion);
             else printf("  %s%c\033[0m  ", g.g[i]->color, g.g[i]->pion);
             if (x != 6)
                 printf("│");
