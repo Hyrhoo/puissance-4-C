@@ -18,14 +18,17 @@ unsigned long hashf(Player *board) {
 void saveScore(Array *save, Player *board, int score) {
     unsigned long id = hashf(board);
     insert(save, id, score);
-    //printDatas(save);
+    //printArray(*save);
 }
 
 int loadScore(Array *save, Player *board) {
-    printArray(*save);
+    //printArray(*save);
     int i, found;
     unsigned long id = hashf(board);
     i = search(save, id, &found);
+    printf("%d, %d\n", i, found);
+    if ((i) < save->l && (i) >= 0)
+        printf("%lu, %lu\n", id, save->a[i]->id);
     if (found) {
         return save->a[i]->score;
     }

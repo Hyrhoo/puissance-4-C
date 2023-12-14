@@ -132,3 +132,60 @@ void showWin(Game g) {
     printf("\n\n\n\n\n");
 }
 
+Array* makeArray() {
+    Array *a;
+    a = (Array*)malloc(sizeof(Array));
+    if (!a) {
+        fprintf(stderr, "Erreur malloc dans 'makeArray'\n");
+        exit(2);
+    }
+    a->l = 0;
+    return a;
+}
+
+int search(Array *a, unsigned long id, int *found) {
+    int low = 0, high = a->l-1, mid;
+    while (low <= high) {
+        mid = (high + low) / 2;
+        if (a->a[mid]->id == id) { 
+            *found = 1;
+            return mid;
+        }
+        if (a->a[mid]->id < id)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+    *found = 0;
+    return low;
+}
+
+void insert(Array *a, unsigned long id, int score) {
+    Data *d;
+    int found;
+    int i = search(a, id, &found);
+    if (found) {
+        if (a->a[i]->score < score) 
+            a->a[i]->score = score;
+        return;
+    }
+    d = (Data*)malloc(sizeof(Data));
+    if (!d) {
+        fprintf(stderr, "Erreur malloc dans 'insert'\n");
+        exit(2);
+    }
+    for (int j = i; j < a->l; j ++) {
+        a->a[j+1] = a->a[j]; 
+    }
+    d->id = id;
+    d->score = score;
+    a->l ++;
+    a->a[i] = d; 
+}
+
+void printArray(Array a) {
+    for (int i = 0; i < a.l; i ++) {
+        printf("(%lu, %d) ", a.a[i]->id, a.a[i]->score);
+    }
+    printf("\n");
+}
