@@ -98,19 +98,5 @@ int main() {
     // displayGame(g);
     // displayGame(g2);
     gammeLoop();
-    // List l = makeList();
-    // insert(&l, 500UL, 2);
-    // printList(l);
-    // insert(&l, 100UL, 2);
-    // printList(l);
-    // insert(&l, 200UL, 2);
-    // printList(l);
-    // insert(&l, 1000UL, 2);
-    // insert(&l, 2000UL, 2);
-    // insert(&l, 500UL, 3);
-    // insert(&l, 600UL, 2);
-    // insert(&l, 700UL, 2);
-    // insert(&l, 300UL, 2);
-    // printList(l);
     return 0;
 }

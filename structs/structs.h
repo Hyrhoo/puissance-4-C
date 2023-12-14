@@ -12,18 +12,15 @@ typedef struct {
     Player np;
 } Game;
 
-typedef struct maillon {
+typedef struct {
     unsigned long id;
     int score;
-    struct maillon *next;
-    struct maillon *last;
-} Maillon;
+} Data;
 
 typedef struct {
-    Maillon* start;
-    Maillon* end;
-} List;
-
+    Data *a[5000];
+    int l;
+} Array;
 
 Player makePlayer(char pion, char color[]);
 
@@ -35,8 +32,8 @@ void undo(Game g, int x, int y);
 int isPosAWin(Game g, int x, int y);
 void showWin(Game g);
 
-List makeList();
-Maillon* search(List l, unsigned long id, int *found);
-void insert(List *l, unsigned long id, int score);
-void freeList(List *l);
-void printList(List l);
+Array* makeArray();
+int search(Array *a, unsigned long id, int *found);
+void insert(Array *a, unsigned long id, int score);
+void freeArray(Array *a);
+void printArray(Array a);

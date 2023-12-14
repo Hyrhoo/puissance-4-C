@@ -15,25 +15,19 @@ unsigned long hashf(Player *board) {
     return hash;
 }
 
-void saveScore(List *save, Player *board, int score) {
+void saveScore(Array *save, Player *board, int score) {
     unsigned long id = hashf(board);
     insert(save, id, score);
-    //printList(*save);
+    //printDatas(save);
 }
 
-int loadScore(List *save, Player *board) {
-    Maillon *m;
-    printList(*save);
-    int found;
+int loadScore(Array *save, Player *board) {
+    printArray(*save);
+    int i, found;
     unsigned long id = hashf(board);
-    m = search(*save, id, &found);
-    if (m) {
-        printf("%lu, %d", m->id, m->score);
-    }
-    else printf("NULL");
-    printf(" %d \n", found);
+    i = search(save, id, &found);
     if (found) {
-        return m->score;
+        return save->a[i]->score;
     }
     return 10000;
 }
@@ -42,7 +36,7 @@ int minimax(Game g, int maxDepth, Player p, Player other) {
     int bestScore = -5000;
     int move = -1;
     int col, row, score;
-    List save = makeList();
+    Array *save = makeArray();
     for (int i=0; i < 7; i ++) {
         col = TEST[i];
         row = placeInCol(g, col, p);
@@ -52,7 +46,7 @@ int minimax(Game g, int maxDepth, Player p, Player other) {
             undo(g, col, row); 
             return col;
         }
-        score = minimaxMin(g, maxDepth-1, other, p, -1000, 1000, &save);
+        score = minimaxMin(g, maxDepth-1, other, p, -1000, 1000, save);
         undo(g, col, row);
         printf("%d, %d, %d, %d\n", bestScore, move, score, col);
         if (score > bestScore) {
@@ -63,7 +57,7 @@ int minimax(Game g, int maxDepth, Player p, Player other) {
     return move;
 }
 
-int minimaxMax(Game g, int maxDepth, Player p, Player other, int alpha, int beta, List *save) {
+int minimaxMax(Game g, int maxDepth, Player p, Player other, int alpha, int beta, Array *save) {
     //printf("%d\n", maxDepth);
     int load = loadScore(save, g.g);
     if (load != 10000) {
@@ -95,7 +89,7 @@ int minimaxMax(Game g, int maxDepth, Player p, Player other, int alpha, int beta
     return bestScore;
 }
 
-int minimaxMin(Game g, int maxDepth, Player p, Player other, int alpha, int beta, List *save) {
+int minimaxMin(Game g, int maxDepth, Player p, Player other, int alpha, int beta, Array *save) {
     //printf("%d\n", maxDepth);
     int load = loadScore(save, g.g);
     if (load != 10000) {
