@@ -62,7 +62,7 @@ void gammeLoop() {
         printf("Au tour du joueur %s%c\033[0m", player->color, player->pion);
         if (ia[turn % 2]) {
             printf(" (ia).\n");
-            col = minimax(g, min(4, 41-turn), player, players[(turn+1) % 2]);
+            col = minimax(g, min(8, 41-turn), player, players[(turn+1) % 2]);
             row = placeInCol(g, col, player);
             printf("%d\n", col);
         }

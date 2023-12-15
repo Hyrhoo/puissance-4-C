@@ -144,11 +144,15 @@ Array* makeArray() {
 }
 
 int search(Array *a, unsigned long id, int *found) {
+    //printf("in search\n");
+    //printArray(*a);
+    //printf("%lu\n\n", id);
     int low = 0, high = a->l-1, mid;
     while (low <= high) {
         mid = (high + low) / 2;
         if (a->a[mid]->id == id) { 
             *found = 1;
+            //printf("out search\n");
             return mid;
         }
         if (a->a[mid]->id < id)
@@ -157,16 +161,19 @@ int search(Array *a, unsigned long id, int *found) {
             high = mid - 1;
     }
     *found = 0;
+    //printf("out search\n");
     return low;
 }
 
 void insert(Array *a, unsigned long id, int score) {
+    //printf("in insert\n");
     Data *d;
     int found;
     int i = search(a, id, &found);
     if (found) {
         if (a->a[i]->score < score) 
             a->a[i]->score = score;
+        //printf("out insert\n");
         return;
     }
     d = (Data*)malloc(sizeof(Data));
@@ -174,18 +181,26 @@ void insert(Array *a, unsigned long id, int score) {
         fprintf(stderr, "Erreur malloc dans 'insert'\n");
         exit(2);
     }
-    for (int j = i; j < a->l; j ++) {
+    for (int j = ((a->l) - 1); j >= i; j --) {
         a->a[j+1] = a->a[j]; 
     }
     d->id = id;
     d->score = score;
     a->l ++;
-    a->a[i] = d; 
+    //printf("--------------------> %lu, %lu\n", a->a[i], a->a[i+1]);
+    a->a[i] = d;
+    //printf("out insert\n");
+}
+
+void freeArray(Array *a) {
+
 }
 
 void printArray(Array a) {
+    //printf("in print\n");
     for (int i = 0; i < a.l; i ++) {
         printf("(%lu, %d) ", a.a[i]->id, a.a[i]->score);
     }
     printf("\n");
+    //printf("out print\n");
 }

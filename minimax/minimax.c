@@ -18,17 +18,12 @@ unsigned long hashf(Player *board) {
 void saveScore(Array *save, Player *board, int score) {
     unsigned long id = hashf(board);
     insert(save, id, score);
-    //printArray(*save);
 }
 
 int loadScore(Array *save, Player *board) {
-    //printArray(*save);
     int i, found;
     unsigned long id = hashf(board);
     i = search(save, id, &found);
-    printf("%d, %d\n", i, found);
-    if ((i) < save->l && (i) >= 0)
-        printf("%lu, %lu\n", id, save->a[i]->id);
     if (found) {
         return save->a[i]->score;
     }
@@ -43,7 +38,6 @@ int minimax(Game g, int maxDepth, Player p, Player other) {
     for (int i=0; i < 7; i ++) {
         col = TEST[i];
         row = placeInCol(g, col, p);
-        //printf("col %d, row %d\n", col, row);
         if (row == -1) continue;
         if (isPosAWin(g, col, row)) {
             undo(g, col, row); 
@@ -64,7 +58,7 @@ int minimaxMax(Game g, int maxDepth, Player p, Player other, int alpha, int beta
     //printf("%d\n", maxDepth);
     int load = loadScore(save, g.g);
     if (load != 10000) {
-        printf("C'EST UTILE !!!\n");
+        //printf("C'EST UTILE !!!\n");
         return load;
     }
     if (maxDepth == 0) return 0;
@@ -96,6 +90,7 @@ int minimaxMin(Game g, int maxDepth, Player p, Player other, int alpha, int beta
     //printf("%d\n", maxDepth);
     int load = loadScore(save, g.g);
     if (load != 10000) {
+        //printf("C'EST UTILE !!!\n");
         return load;
     }
     if (maxDepth == 0) return 0;
