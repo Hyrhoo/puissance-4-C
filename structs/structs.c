@@ -193,7 +193,10 @@ void insert(Array *a, unsigned long id, int score) {
 }
 
 void freeArray(Array *a) {
-
+    for (int i = 0; i < a->l; i ++) {
+        free(a->a[i]);
+    }
+    free(a);
 }
 
 void printArray(Array a) {

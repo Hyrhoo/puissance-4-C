@@ -41,6 +41,7 @@ int minimax(Game g, int maxDepth, Player p, Player other) {
         if (row == -1) continue;
         if (isPosAWin(g, col, row)) {
             undo(g, col, row); 
+            freeArray(save);
             return col;
         }
         score = minimaxMin(g, maxDepth-1, other, p, -1000, 1000, save);
@@ -51,6 +52,7 @@ int minimax(Game g, int maxDepth, Player p, Player other) {
             move = col;
         }
     }
+    freeArray(save);
     return move;
 }
 
