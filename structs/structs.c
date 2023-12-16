@@ -94,7 +94,6 @@ int isPosAWin(Game g, int x, int y) {
             while ((next >= 0 || next < 42) && !((last%7 == 0) && (xdep == -1) || (last%7 == 6) && (xdep == 1))) {
                 if (g.g[next] == pion) {
                     cons++;
-                    //printf("debug(i %d (%d, %d), last %d (%d, %d), next %d (%d, %d), dep %d, xdep %d, pion %c, g.g[next] %c)\n", i, i%7, i/7, last, last%7, last/7, next%7, next/7, next, dep, xdep, pion->pion, g.g[next]->pion);
                     if (cons == 4)
                         return 1;
                 }
@@ -134,7 +133,7 @@ void showWin(Game g) {
 Array makeArray() {
     // printf("in make\n");
     Array a;
-    a = (Array)calloc(99999999, sizeof(Data));
+    a = (Array)calloc(SIZE, sizeof(Data));
     if (!a) {
         fprintf(stderr, "Erreur calloc dans 'makeArray'\n");
         exit(2);
@@ -145,13 +144,11 @@ Array makeArray() {
 
 int search(Array a, unsigned long id, int *found) {
     // printf("in search\n");
-    //printArray(a);
-    //printf("%lu\n\n", id);
-    int i = id % 99999999;
+    int i = id % SIZE;
     *found = 0;
     while (a[i] && a[i]->id != id) {
         // printf("%d\n", i);
-        i = (i + 1) % 99999999;
+        i = (i + 1) % SIZE;
     }
     if (a[i] && a[i]->id == id)
         *found = 1;
@@ -182,7 +179,7 @@ void insert(Array a, unsigned long id, int score) {
 }
 
 void freeArray(Array a) {
-    for (int i = 0; i < 99999999; i ++) {
+    for (int i = 0; i < SIZE; i ++) {
         free(a[i]);
     }
     free(a);
@@ -190,7 +187,7 @@ void freeArray(Array a) {
 
 void printArray(Array a) {
     // printf("in print\n");
-    for (int i = 0; i < 99999999; i ++) {
+    for (int i = 0; i < SIZE; i ++) {
         if (a[i])
             printf("(%lu, %d) ", a[i]->id, a[i]->score);
     }

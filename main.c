@@ -50,7 +50,7 @@ void askIA(int ia[]) {
 
 void gammeLoop() {
     Game g = makeGame();
-    Player players[] = {makePlayer('x', "\033[0;31m"), makePlayer('o', "\033[0;34m")};
+    Player players[] = {makePlayer('X', "\033[0;34m"), makePlayer('O', "\033[0;31m")};
     int ia[2];
     Player winner = NULL;
     Player player;
@@ -86,29 +86,6 @@ void gammeLoop() {
 }
 
 int main() {
-    // Game g = makeGame(), g2;
-    // Player p = makePlayer('x', "\033[0;31m");
-    // placeInCol(g, 1, p);
-    // displayGame(g);
-    // undo(g, 1, 5);
-    // displayGame(g);
-    // g2 = copyGame(g);
-    // displayGame(g2);
-    // placeInCol(g2, 1, p);
-    // displayGame(g);
-    // displayGame(g2);
-    // int i, f;
-    // Array a = makeArray();
-    // insert(a, 10010101LU, 1);
-    // insert(a, 100120101LU, 1);
-    // insert(a, 100124353511LU, 1);
-    // printArray(a);
-    // i = search(a, 10010101LU, &f);
-    // printf("%d, %d\n", i,f); 
-    // i = search(a, 100120101LU, &f);
-    // printf("%d, %d\n", i,f); 
-    // i = search(a, 100124353511LU, &f);
-    // printf("%d, %d\n", i,f); 
     gammeLoop();
     return 0;
 }

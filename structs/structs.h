@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define SIZE 99999999
+
 typedef struct {
     char pion;
     char color[10];
