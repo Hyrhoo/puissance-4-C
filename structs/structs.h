@@ -17,10 +17,7 @@ typedef struct {
     int score;
 } Data;
 
-typedef struct {
-    Data *a[5000];
-    int l;
-} Array;
+typedef Data **Array;
 
 Player makePlayer(char pion, char color[]);
 
@@ -32,8 +29,8 @@ void undo(Game g, int x, int y);
 int isPosAWin(Game g, int x, int y);
 void showWin(Game g);
 
-Array* makeArray();
-int search(Array *a, unsigned long id, int *found);
-void insert(Array *a, unsigned long id, int score);
-void freeArray(Array *a);
+Array makeArray();
+int search(Array a, unsigned long id, int *found);
+void insert(Array a, unsigned long id, int score);
+void freeArray(Array a);
 void printArray(Array a);

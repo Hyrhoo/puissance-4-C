@@ -109,7 +109,6 @@ int isPosAWin(Game g, int x, int y) {
 }
 
 void showWin(Game g) {
-    // \033[7m\033[5;32m
     int i;
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     printf("\t\t╔═════╤═════╤═════╤═════╤═════╤═════╤═════╗\n");
@@ -132,48 +131,43 @@ void showWin(Game g) {
     printf("\n\n\n\n\n");
 }
 
-Array* makeArray() {
-    Array *a;
-    a = (Array*)malloc(sizeof(Array));
+Array makeArray() {
+    // printf("in make\n");
+    Array a;
+    a = (Array)calloc(99999999, sizeof(Data));
     if (!a) {
-        fprintf(stderr, "Erreur malloc dans 'makeArray'\n");
+        fprintf(stderr, "Erreur calloc dans 'makeArray'\n");
         exit(2);
     }
-    a->l = 0;
+    // printf("out make\n");
     return a;
 }
 
-int search(Array *a, unsigned long id, int *found) {
-    //printf("in search\n");
-    //printArray(*a);
+int search(Array a, unsigned long id, int *found) {
+    // printf("in search\n");
+    //printArray(a);
     //printf("%lu\n\n", id);
-    int low = 0, high = a->l-1, mid;
-    while (low <= high) {
-        mid = (high + low) / 2;
-        if (a->a[mid]->id == id) { 
-            *found = 1;
-            //printf("out search\n");
-            return mid;
-        }
-        if (a->a[mid]->id < id)
-            low = mid + 1;
-        else
-            high = mid - 1;
-    }
+    int i = id % 99999999;
     *found = 0;
-    //printf("out search\n");
-    return low;
+    while (a[i] && a[i]->id != id) {
+        // printf("%d\n", i);
+        i = (i + 1) % 99999999;
+    }
+    if (a[i] && a[i]->id == id)
+        *found = 1;
+    // printf("out search\n");
+    return i;
 }
 
-void insert(Array *a, unsigned long id, int score) {
-    //printf("in insert\n");
+void insert(Array a, unsigned long id, int score) {
+    // printf("in insert\n");
     Data *d;
     int found;
     int i = search(a, id, &found);
     if (found) {
-        if (a->a[i]->score < score) 
-            a->a[i]->score = score;
-        //printf("out insert\n");
+        if (a[i]->score < score) 
+            a[i]->score = score;
+        // printf("out insert\n");
         return;
     }
     d = (Data*)malloc(sizeof(Data));
@@ -181,29 +175,25 @@ void insert(Array *a, unsigned long id, int score) {
         fprintf(stderr, "Erreur malloc dans 'insert'\n");
         exit(2);
     }
-    for (int j = ((a->l) - 1); j >= i; j --) {
-        a->a[j+1] = a->a[j]; 
-    }
     d->id = id;
     d->score = score;
-    a->l ++;
-    //printf("--------------------> %lu, %lu\n", a->a[i], a->a[i+1]);
-    a->a[i] = d;
-    //printf("out insert\n");
+    a[i] = d;
+    // printf("out insert\n");
 }
 
-void freeArray(Array *a) {
-    for (int i = 0; i < a->l; i ++) {
-        free(a->a[i]);
+void freeArray(Array a) {
+    for (int i = 0; i < 99999999; i ++) {
+        free(a[i]);
     }
     free(a);
 }
 
 void printArray(Array a) {
-    //printf("in print\n");
-    for (int i = 0; i < a.l; i ++) {
-        printf("(%lu, %d) ", a.a[i]->id, a.a[i]->score);
+    // printf("in print\n");
+    for (int i = 0; i < 99999999; i ++) {
+        if (a[i])
+            printf("(%lu, %d) ", a[i]->id, a[i]->score);
     }
     printf("\n");
-    //printf("out print\n");
+    // printf("out print\n");
 }

@@ -62,7 +62,7 @@ void gammeLoop() {
         printf("Au tour du joueur %s%c\033[0m", player->color, player->pion);
         if (ia[turn % 2]) {
             printf(" (ia).\n");
-            col = minimax(g, min(8, 41-turn), player, players[(turn+1) % 2]);
+            col = minimax(g, min(16, 41-turn), player, players[(turn+1) % 2]);
             row = placeInCol(g, col, player);
             printf("%d\n", col);
         }
@@ -97,6 +97,18 @@ int main() {
     // placeInCol(g2, 1, p);
     // displayGame(g);
     // displayGame(g2);
+    // int i, f;
+    // Array a = makeArray();
+    // insert(a, 10010101LU, 1);
+    // insert(a, 100120101LU, 1);
+    // insert(a, 100124353511LU, 1);
+    // printArray(a);
+    // i = search(a, 10010101LU, &f);
+    // printf("%d, %d\n", i,f); 
+    // i = search(a, 100120101LU, &f);
+    // printf("%d, %d\n", i,f); 
+    // i = search(a, 100124353511LU, &f);
+    // printf("%d, %d\n", i,f); 
     gammeLoop();
     return 0;
 }
