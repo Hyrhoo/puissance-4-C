@@ -13,15 +13,16 @@ int varInTab(int var, int tab[], int nb) {
     return 0;
 }
 
-int askCol() {
+int askCol(int max) {
     int e, input, tmp;
     do {
-        printf("donnez un numéro de collone: ");
+        printf("donnez un numéro de colonne: ");
         e = scanf("%d", &input);
         do {
             tmp = getchar();
         } while (tmp != EOF && tmp != '\n');
-    } while (e != 1 || input < 1 || input > 7);
+        printf("%d\n", input);
+    } while (e != 1 || input < 1 || input > max);
     return input;
 }
 
@@ -49,40 +50,48 @@ void askIA(int ia[]) {
 }
 
 void gammeLoop() {
-    Game g = makeGame();
-    Player players[] = {makePlayer('X', "\033[0;34m"), makePlayer('O', "\033[0;31m")};
+    Game game = makeGame(6, 7);
     int ia[2];
     Player winner = NULL;
     Player player;
     int col, row, win;
     askIA(ia);
-    for (int turn = 0; turn < 42; turn++) {
-        displayGame(g);
-        player = players[turn % 2];
-        printf("Au tour du joueur %s%c\033[0m", player->color, player->pion);
+    for (int turn = 0; turn < game->maxTurn; turn++) {
+        player = game->players[game->currentPlayer];
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        displayGame(game);
+        printf("\n\n\n\n");
+        printf("Au tour du joueur ");
+        displayPlayer(player);
         if (ia[turn % 2]) {
             printf(" (ia).\n");
-            col = minimax(g, min(16, 41-turn), player, players[(turn+1) % 2]);
-            row = placeInCol(g, col, player);
+            col = minimax(game, min(17, game->maxTurn - turn - 1));
+            row = getRow(game, col);
+            place(game, col, row);
             printf("%d\n", col);
         }
         else {
             printf(".\n");
             do {
-                col = askCol() - 1;
-                row = placeInCol(g, col, player);
+                col = askCol(game->width) - 1;
+                row = getRow(game, col);
+                printf("%d,%d\n",col, row);
             } while (row == -1);
+            place(game, col, row);
         }
-        if (isPosAWin(g, col, row)) {
+        if (isPosAWin(game, col, row)) {
             winner = player;
             break;
         }
     }
-    showWin(g);
+    showWin(game);
     if (winner == NULL)
         printf("Égalité.\n");
-    else
-        printf("Victoire du joueur %s%c\033[0m!\n", winner->color, winner->pion);
+    else {
+        printf("Victoire du joueur ");
+        displayPlayer(winner);
+        printf(" !\n");
+    }
 }
 
 int main() {

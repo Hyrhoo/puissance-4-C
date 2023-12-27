@@ -1,5 +1,5 @@
-#include "../structs/structs.h"
+#include "../structs/dict/dict.h"
 
-int minimax(Game g, int maxDepth, Player p, Player other);
-int minimaxMax(Game g, int maxDepth, Player p, Player other, int alpha, int beta, Array save);
-int minimaxMin(Game g, int maxDepth, Player p, Player other, int alpha, int beta, Array save);
+int minimax(Game g, int maxDepth);
+int minimaxMax(Game g, int maxDepth, int alpha, int beta, Dict save);
+int minimaxMin(Game g, int maxDepth, int alpha, int beta, Dict save);
