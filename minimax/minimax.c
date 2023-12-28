@@ -1,10 +1,5 @@
 #include "minimax.h"
 
-#ifndef TEST_H
-#define TEST_H
-int TEST[] = {3, 2, 4, 1, 5, 0, 6};
-#endif
-
 void saveScore(Dict save, Game game, int score) {
     // printf("in save\n");
     unsigned long id = hashf(game);
@@ -29,101 +24,62 @@ int loadScore(Dict save, Game game) {
 int minimax(Game game, int maxDepth) {
     int bestScore = -5000;
     int move = -1;
+    int max = game->maxTurn - game->currentTurn;
     int col, row, score;
     Dict save = makeDict();
-    for (col = 0; col < game->width; col ++) {
-        // col = TEST[i];
+    for (int i = 0; i < game->width; i ++) {
+        col = game->test[i];
         row = getRow(game, col);
         if (row == -1) continue;
         place(game, col, row);
         if (isPosAWin(game, col, row)) {
             undo(game, col, row); 
             freeDict(save);
+            printf("%d, win\n", col);
             return col;
         }
-        score = minimaxMin(game, maxDepth-1, -1000, 1000, save);
+        score = -negamax(game, maxDepth-1, -max, max, save);
         undo(game, col, row);
         printf("%d, %d, %d, %d\n", bestScore, move, score, col);
         if (score > bestScore) {
             bestScore = score;
             move = col;
         }
-        if (score == bestScore) {
-            int mid = (game->width) / 2;
-            if (abs(col - mid) < abs(move - mid))
-                move = col;
-        }
     }
     freeDict(save);
+    printf("%d, %d\n", move, bestScore);
     return move;
 }
 
-int minimaxMax(Game game, int maxDepth, int alpha, int beta, Dict save) {
-    // printf("in max\n");
+int negamax(Game game, int maxDepth, int alpha, int beta, Dict save) {
     int load = loadScore(save, game);
-    if (load != 10000) {
-        // printf("out max\n");
-        return load;
-    }
+    if (load != 10000) return load;
     if (maxDepth == 0) return 0;
-    int bestScore = -5000;
+    int max = game->maxTurn - game->currentTurn;
+    if (beta > max) {
+        beta = max;
+        if (alpha >= beta) return beta;
+    }
     int col, row, score;
-    for (col = 0; col < game->width; col ++) {
-        // col = TEST[i];
+    for (int i = 0; i < game->width; i ++) {
+        col = game->test[i];
         row = getRow(game, col);
-        // printf("\tmax %d %d\n", col, row);
         if (row == -1) continue;
         place(game, col, row);
-        if (isPosAWin(game, col, row)) score = 100;
-        else score = minimaxMin(game, maxDepth-1, alpha, beta, save);
-        undo(game, col, row);
-        (score > 0) ? score -- : (score < 0) ? score ++ : score;
-        if (score > bestScore)
-            bestScore = score;
-        if (score > alpha)
-            alpha = score;
-        if (beta <= alpha) {
-            saveScore(save, game, bestScore);
-            // printf("out max\n");
-            return bestScore;
+        if (isPosAWin(game, col, row)) {
+            score = game->maxTurn - game->currentTurn;
+            saveScore(save, game, score);
+            undo(game, col, row);
+            return score;
         }
-    }
-    saveScore(save, game, bestScore);
-    // printf("out max\n");
-    return bestScore;
-}
-
-int minimaxMin(Game game, int maxDepth, int alpha, int beta, Dict save) {
-    // printf("in min\n");
-    int load = loadScore(save, game);
-    if (load != 10000) {
-        // printf("out min\n");
-        return load;
-    }
-    if (maxDepth == 0) return 0;
-    int bestScore = 5000;
-    int col, row, score;
-    for (int col = 0; col < game->width; col ++) {
-        // col = TEST[i];
-        row = getRow(game, col);
-        // printf("\tmin %d %d\n", col, row);
-        if (row == -1) continue;
-        place(game, col, row);
-        if (isPosAWin(game, col, row)) score = -100;
-        else score = minimaxMax(game, maxDepth-1, alpha, beta, save);
+        else score = -negamax(game, maxDepth - 1, -beta, -alpha, save);
         undo(game, col, row);
-        (score > 0) ? score -- : (score < 0) ? score ++ : score;
-        if (score < bestScore)
-            bestScore = score;
-        if (score < beta)
-            beta = score;
-        if (beta <= alpha) {
-            saveScore(save, game, bestScore);
-            // printf("out min\n");
-            return bestScore;
+        if (score >= beta) {
+            saveScore(save, game, score);
+            return score;
         }
+        if (score > alpha) alpha = score;
     }
-    saveScore(save, game, bestScore);
-    // printf("out min\n");
-    return bestScore;
+    saveScore(save, game, alpha);
+    return alpha;
 }

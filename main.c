@@ -1,4 +1,5 @@
 #include "minimax/minimax.h"
+#include "time.h"
 
 int min(int a, int b) {
     if (a < b) return a;
@@ -50,7 +51,7 @@ void askIA(int ia[]) {
 }
 
 void gammeLoop() {
-    Game game = makeGame(6, 7);
+    Game game = makeGame(10, 15);
     int ia[2];
     Player winner = NULL;
     Player player;
@@ -65,10 +66,12 @@ void gammeLoop() {
         displayPlayer(player);
         if (ia[turn % 2]) {
             printf(" (ia).\n");
-            col = minimax(game, min(17, game->maxTurn - turn - 1));
+            time_t start = time(NULL);
+            col = minimax(game, min(12, game->maxTurn - turn - 1));
+            time_t end = time(NULL);
             row = getRow(game, col);
             place(game, col, row);
-            printf("%d\n", col);
+            printf("%lf sec\n", difftime(end, start));
         }
         else {
             printf(".\n");
@@ -84,7 +87,9 @@ void gammeLoop() {
             break;
         }
     }
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     showWin(game);
+    printf("\n\n\n\n");
     if (winner == NULL)
         printf("Égalité.\n");
     else {

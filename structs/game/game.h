@@ -12,13 +12,13 @@ typedef struct game {
     int currentTurn;
     int maxTurn;
     int currentPlayer;
+    int *test;
     Player players[3];
 } *Game;
 
 Game makeGame(int height, int width);
 void displayGame(Game game);
 int getRow(Game game, int col);
-// int placeInCol(Game game, int col, Player p);
 void changePlayer(Game game);
 void place(Game game, int x, int y);
 void undo(Game game, int x, int y);

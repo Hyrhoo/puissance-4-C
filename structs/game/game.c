@@ -51,6 +51,19 @@ Game makeGame(int height, int width) {
     for (int i = 0; i < width; i ++) {
         game->colHeight[i] = 0;
     }
+    game->test = (int*)malloc(sizeof(int) * game->width);
+    if (game->test == NULL) {
+        fprintf(stderr, "Erreur malloc dans 'makeGame'\n");
+        exit(2);
+    }
+    int cpt = 1;
+    game->test[0] = game->width / 2;
+    for (int i = 1; i <= game->test[0]; i ++) {
+        game->test[cpt] = game->test[0] - i;
+        game->test[cpt+1] = game->test[0] + i;
+        cpt += 2;
+    }
+    if (game->width % 2 == 0) game->test[cpt] = 0;
     game->players[0] = makePlayer(' ', "");
     game->players[1] = makePlayer('X', "\033[0;36m");
     game->players[2] = makePlayer('0', "\033[0;31m");
@@ -101,7 +114,8 @@ void displayGame(Game game) {
     // print numeros
     printf("\t\t ");
     for (int i = 1; i <= game->width; i++) {
-        printf("  %d  ", i);
+        printf("  %d ", i);
+        if (i < 10) printf(" ");
         if (i != game->width)
             printf(" ");
     }
@@ -237,7 +251,8 @@ void showWin(Game game) {
     // print numeros
     printf("\t\t ");
     for (int i = 1; i <= game->width; i++) {
-        printf("  %d  ", i);
+        printf("  %d ", i);
+        if (i < 10) printf(" ");
         if (i != game->width)
             printf(" ");
     }
