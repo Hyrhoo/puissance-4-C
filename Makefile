@@ -1,11 +1,11 @@
-exe: *.c structs/dict/*.c structs/game/*.c structs/player/*.c minimax/*.c
-	gcc *.c structs/dict/*.c structs/game/*.c structs/player/*.c minimax/*.c -o p4.exe
-structs: structs/*.c
-	gcc structs/*.c -o structs.exe
-minimax: minimax/*.c
-	gcc minimax/*.c -o minimax.exe
+exe: *.cpp structs/dict/*.cpp structs/game/*.cpp structs/player/*.cpp minimax/*.cpp
+	gcc *.cpp structs/dict/*.cpp structs/game/*.cpp structs/player/*.cpp minimax/*.cpp -lstdc++ -o p4.exe
+structs: structs/*.cpp
+	gcc structs/*.cpp -lstdc++ -o structs.exe
+minimax: minimax/*.cpp
+	gcc minimax/*.cpp -lstdc++ -o minimax.exe
 clean:
 	rm *.exe
 
-test: test/*.c
-	gcc test/*.c -o test/test.exe
+test: test/*.cpp
+	gcc test/*.cpp -lstdc++ -o test/test.exe
