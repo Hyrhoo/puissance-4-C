@@ -1,2 +1,2 @@
-# puissance-4-C++
-Ancienement en C mais je le refait en C++
+# puissance-4-C
+Je le refait en C++
