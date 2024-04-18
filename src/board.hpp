@@ -7,6 +7,7 @@ class Board {
 private:
 	int hauteur;
 	int largeur;
+	
 
 public:
 	Board(int hauteur = 5, int largeur = 7);
